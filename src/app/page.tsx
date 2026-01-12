@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -153,8 +153,8 @@ const Toast = ({ message, onClose }: { message: string, onClose: () => void }) =
   );
 };
 
-// --- MAIN PAGE COMPONENT ---
-export default function Portfolio() {
+// --- MAIN CONTENT COMPONENT ---
+function PortfolioContent() {
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -336,5 +336,14 @@ export default function Portfolio() {
 
       <footer className="py-8 text-center text-sm text-gray-500">© 2026 Mihiranga Kalhara. All rights reserved. Designed & Built with Next.js.</footer>
     </div>
+  );
+}
+
+// --- EXPORT DEFAULT WITH SUSPENSE BOUNDARY ---
+export default function Portfolio() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">Loading...</div>}>
+      <PortfolioContent />
+    </Suspense>
   );
 }
